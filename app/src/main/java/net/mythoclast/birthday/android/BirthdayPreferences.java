@@ -1,4 +1,4 @@
-package com.isitchristmas.android;
+package net.mythoclast.birthday.android;
 
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -7,7 +7,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
-public class ChristmasPreferences extends PreferenceActivity {
+public class BirthdayPreferences extends PreferenceActivity {
 	String beginningInterval = null;
 	
 	public static final String SINGLE_ENABLED_KEY = "notify_single_enable";
@@ -41,41 +41,41 @@ public class ChristmasPreferences extends PreferenceActivity {
 		updateIntervalSummary(beginningInterval);
 		updateRingtoneSummary(PreferenceManager.getDefaultSharedPreferences(this).getString(RINGTONE_KEY, null));
 		
-		// schedule/cancel single Christmas alarm based on whether preference is checked
+		// schedule/cancel single Kat's birthday alarm based on whether preference is checked
 		findPreference(SINGLE_ENABLED_KEY).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 			@Override
 			public boolean onPreferenceChange(Preference preference, Object newValue) {
 				boolean value = ((Boolean) newValue).booleanValue();
 				if (value)
-					ChristmasAlarm.setChristmasAlarm(ChristmasPreferences.this);
+					BirthdayAlarm.setBirthdayAlarm(BirthdayPreferences.this);
 				else
-					ChristmasAlarm.cancelChristmasAlarm(ChristmasPreferences.this);
+					BirthdayAlarm.cancelBirthdayAlarm(BirthdayPreferences.this);
 				return true;
 			}
 		});
 		
-		// schedule/cancel recurring Christmas alarm based on whether preference is checked
+		// schedule/cancel recurring Kat's birthday alarm based on whether preference is checked
 		findPreference(RECURRING_ENABLED_KEY).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 			@Override
 			public boolean onPreferenceChange(Preference preference, Object newValue) {
 				boolean value = ((Boolean) newValue).booleanValue();
 				if (value)
-					ChristmasAlarm.setRecurringAlarm(ChristmasPreferences.this);
+					BirthdayAlarm.setRecurringAlarm(BirthdayPreferences.this);
 				else
-					ChristmasAlarm.cancelRecurringAlarm(ChristmasPreferences.this);
+					BirthdayAlarm.cancelRecurringAlarm(BirthdayPreferences.this);
 				
 				return true;
 			}
 		});
 		
-		// reschedule recurring Christmas alarm when interval changes
+		// reschedule recurring Kat's birthday alarm when interval changes
 		findPreference(RECURRING_INTERVAL_KEY).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 			@Override
 			public boolean onPreferenceChange(Preference preference, Object newValue) {
 				String value = (String) newValue;
 				if (!value.equals(beginningInterval)) {
-					ChristmasAlarm.cancelRecurringAlarm(ChristmasPreferences.this);
-					ChristmasAlarm.setRecurringAlarm(ChristmasPreferences.this, value);
+					BirthdayAlarm.cancelRecurringAlarm(BirthdayPreferences.this);
+					BirthdayAlarm.setRecurringAlarm(BirthdayPreferences.this, value);
 					
 					updateIntervalSummary((String) newValue);
 					
@@ -112,7 +112,7 @@ public class ChristmasPreferences extends PreferenceActivity {
 		String[] codes = getResources().getStringArray(R.array.notify_recurring_interval_values);
 		String[] names = getResources().getStringArray(R.array.notify_recurring_interval_names);
 
-		for (int i=0; i<codes.length; i++) {
+		for (int i = 0; i < codes.length; i++) {
 			if (codes[i].equals(code))
 				return names[i];
 		}

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.isitchristmas.android"
-    android:versionCode="3"
-    android:versionName="2.0"
+    package="net.mythoclast.birthday.android"
+    android:versionCode="0"
+    android:versionName="1.0"
     >
     <application android:icon="@drawable/icon" 
     	android:label="@string/app_name"
-    	android:debuggable="true"
     	>
-        <activity android:name=".ChristmasActivity"
+        <activity android:name=".BirthdayActivity"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -16,25 +15,25 @@
             </intent-filter>
         </activity>
         
-        <activity android:name=".ChristmasPreferences"
+        <activity android:name=".BirthdayPreferences"
         	android:label="@string/menu_preferences" 
         	/>
 
 		<receiver 
-			android:name=".ChristmasWidgetProvider"
+			android:name=".BirthdayWidgetProvider"
 			android:label="@string/app_name"
 			>
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 			</intent-filter>
-			<meta-data android:name="android.appwidget.provider" android:resource="@xml/christmas_widget_provider_info" />
+			<meta-data android:name="android.appwidget.provider" android:resource="@xml/birthday_widget_provider_info" />
 		</receiver>
 		
-		<receiver android:name=".ChristmasWidgetReceiver" />
+		<receiver android:name=".BirthdayWidgetReceiver" />
 		
-		<receiver android:name=".ChristmasNotificationReceiver" />
+		<receiver android:name=".BirthdayNotificationReceiver" />
 		
-		<receiver android:name=".ChristmasBootReceiver"
+		<receiver android:name=".BirthdayBootReceiver"
 			>
 			<intent-filter>
         		<action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -49,11 +48,6 @@
     <uses-feature 
     	android:name="android.hardware.touchscreen"
     	android:required="false"
-    	/>
-    
-    <uses-sdk 
-    	android:minSdkVersion="3"
-    	android:targetSdkVersion="5" 
     	/>
 
 </manifest>

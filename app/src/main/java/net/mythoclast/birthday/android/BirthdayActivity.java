@@ -1,4 +1,4 @@
-package com.isitchristmas.android;
+package net.mythoclast.birthday.android;
 
 import java.util.Locale;
 
@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.widget.TextView;
 
-public class ChristmasActivity extends Activity {
+public class BirthdayActivity extends Activity {
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -19,33 +19,35 @@ public class ChristmasActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
         
-        isItChristmas(); // set the answer now
-        setLocalAlarm(); // so it updates this screen while the user is watching on Christmas
+        isItHerBirthday(); // set the answer now
+        setLocalAlarm(); // so it updates this screen while the user is watching on Kat's birthday
         
         // will cancel and re-schedule all alarms when the user opens the app
-        ChristmasAlarm.setEnabledAlarms(this);
+        BirthdayAlarm.setEnabledAlarms(this);
     }
     
-    public void isItChristmas() {
-    	((TextView) findViewById(R.id.answer)).setText(Christmas.answer(Christmas.isIt(), Locale.getDefault()));
+    public void isItHerBirthday() {
+    	((TextView) findViewById(R.id.answer)).setText(Birthday.answer(Birthday.isIt(), Locale.getDefault()));
     }
     
     final Handler handler = new Handler();
     final Runnable updater = new Runnable() {
     	public void run() {
-    		isItChristmas();
+    		isItHerBirthday();
     	}
     };
     
     public void setLocalAlarm() {
     	Thread alarm = new Thread() {
     		public void run() {
-    			long untilChristmas = Christmas.time() - System.currentTimeMillis();
+    			long untilHerBirthday = Birthday.time() - System.currentTimeMillis();
     			
     			try {
-    				sleep(untilChristmas);
+    				sleep(untilHerBirthday);
     			} catch(InterruptedException e) {
     				// well, I never
+                    //
+                    // MAYBE YOU SHOULD
     			}
     			handler.post(updater);
     		};
@@ -64,7 +66,7 @@ public class ChristmasActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) { 
 		case R.id.preferences:
-			startActivity(new Intent(this, ChristmasPreferences.class));
+			startActivity(new Intent(this, BirthdayPreferences.class));
 			break;
 		}
 		return true;

@@ -1,14 +1,14 @@
-package com.isitchristmas.android;
+package net.mythoclast.birthday.android;
 
 import java.util.Locale;
 
 import android.text.format.Time;
 
-public class Christmas {
-	public static final String TAG = "IsItChristmas";
+public class Birthday {
+	public static final String TAG = "Is it Kat's Birthday?";
 
 	public static final int MONTH = 11; // 0-indexed
-	public static final int DAY = 25;   // 1-indexed
+	public static final int DAY = 26;   // 1-indexed
 	
 	public static int answer(boolean isIt, Locale locale) {
 		return isIt ? yes(locale) : no(locale); 
@@ -20,19 +20,19 @@ public class Christmas {
 		return now.month == MONTH && now.monthDay == DAY;
 	}
 	
-	// returns the epoch-based time of the next Christmas, at midnight, in milliseconds
+	// returns the epoch-based time of Kat's next birthday, at midnight, in milliseconds
 	public static long time() {
 		Time now = new Time();
 		now.setToNow();
 		int thisYear = now.year;
 		
-		Time christmas = new Time();
-		christmas.set(DAY, MONTH, thisYear);
+		Time birthday = new Time();
+		birthday.set(DAY, MONTH, thisYear);
 		
-		if (System.currentTimeMillis() > christmas.toMillis(false))
-			christmas.set(DAY, MONTH, thisYear + 1);
+		if (System.currentTimeMillis() > birthday.toMillis(false))
+			birthday.set(DAY, MONTH, thisYear + 1);
 		
-		return christmas.toMillis(false);
+		return birthday.toMillis(false);
 	}
 	
 	public static int yes(Locale locale) {
@@ -41,7 +41,6 @@ public class Christmas {
 		
 		if (country.equals("CA"))
 			return R.string.canada_yes;
-		
 		if (language.equals("ar"))
 			return R.string.ar_yes;
 		if (language.equals("cs"))
@@ -98,7 +97,6 @@ public class Christmas {
 			return R.string.zh_yes;
 		if (language.equals("sr"))
 			return R.string.sr_yes;
-							
 		return R.string.default_yes;
 	}
 	

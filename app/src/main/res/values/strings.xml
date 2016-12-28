@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Is it Kat\'s Birthday?</string>
+    
+    <string name="menu_preferences">Preferences</string>
+    
+    <string name="notify_single_enable">Notify me on Kat\'s birthday</string>
+    <string name="notify_single_enable_summary_on">You will receive a notification at midnight on December 26th</string>
+    <string name="notify_single_enable_summary_off">You will not receive a notification at midnight on December 26th</string>
+    
+    <string name="notify_recurring_enable">Toggle periodic notifications</string>
+    <string name="notify_recurring_enable_summary_on">You will be periodically notified of whether or not it is Kat\'s birthday.</string>
+    <string name="notify_recurring_enable_summary_off">You will not be kept up to date</string>
+    
+    <string name="notify_recurring_interval">How often?</string>
+    <string-array name="notify_recurring_interval_names">
+    	<item>Once daily, at noon.</item>
+    	<item>Every 15 minutes.</item>
+    </string-array>
+    <string-array name="notify_recurring_interval_values">
+    	<item>daily</item>
+    	<item>fifteen</item>
+    </string-array>
+    
+    <string name="notify_vibrate">Toggle vibration</string>
+    <string name="notify_vibrate_summary_on">Notifications will vibrate your device, if possible.</string>
+    <string name="notify_vibrate_summary_off">Notifications will not vibrate your device, especially if your device does not vibrate.</string>
+    
+    <string name="notify_ringtone">Select an alert sound to accompany any notifications with regards to the status of Kat\'s birthday...</string>
+</resources>

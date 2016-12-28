@@ -1,4 +1,4 @@
-package com.isitchristmas.android;
+package net.mythoclast.birthday.android;
 
 import java.util.Locale;
 
@@ -11,30 +11,30 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 
 
-public class ChristmasWidgetProvider extends AppWidgetProvider {
+public class BirthdayWidgetProvider extends AppWidgetProvider {
 
 	@Override
 	public void onEnabled(Context context) {
-		long christmasTime = Christmas.time();
+		long herBirthday = Birthday.time();
 		
-		Intent receiver = new Intent(context, ChristmasWidgetReceiver.class);
-		PendingIntent christmas = PendingIntent.getBroadcast(context, 0, receiver, 0);
+		Intent receiver = new Intent(context, BirthdayWidgetReceiver.class);
+		PendingIntent birthday = PendingIntent.getBroadcast(context, 0, receiver, 0);
 		
 		AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-		manager.set(AlarmManager.RTC, christmasTime, christmas);
+		manager.set(AlarmManager.RTC, herBirthday, birthday);
 	}
 	
 	@Override
-	public void onUpdate(Context context, AppWidgetManager manager, int[] appWidgetIds) {		
-		int answerId = Christmas.answer(Christmas.isIt(), Locale.getDefault());
-        String answer = context.getResources().getString(answerId);
+	public void onUpdate(Context context, AppWidgetManager manager, int[] appWidgetIDs) {		
+		int answerID = Birthday.answer(Birthday.isIt(), Locale.getDefault());
+        String answer = context.getResources().getString(answerID);
 		
         // Perform this loop procedure for each widget that belongs to this provider
-        final int length = appWidgetIds.length;
-        for (int i=0; i<length; i++) {
-            int appWidgetId = appWidgetIds[i];
+        final int length = appWidgetIDs.length;
+        for (int i = 0; i < length; i++) {
+            int appWidgetID = appWidgetIDs[i];
             RemoteViews views = buildView(context, answer);
-            manager.updateAppWidget(appWidgetId, views);
+            manager.updateAppWidget(appWidgetID, views);
         }
 	}
 	
