@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var Christmas = require("./public/js/christmas"),
+var KatsBirthday = require("./public/js/katsbirthday"),
     zones = require("./public/js/zones"),
     labels = require("./public/js/labels")
     moment = require("moment-timezone");
@@ -37,9 +37,9 @@ module.exports = function(app, config, findCountry) {
         return req.get("IFTTT-Channel-Key") == secret;
     };
 
-    // Every Christmas since 2007, in the given time zone,
+    // Every KatsBirthday since 2007, in the given time zone,
     // to honor the site's history.
-    var christmasesFor = function(country, timezone) {
+    var katsBirthdaysFor = function(country, timezone) {
         var firstYear = 2007; // nostalgia
 
         var now = new Date();
@@ -47,57 +47,57 @@ module.exports = function(app, config, findCountry) {
         var thisYear = 1900 + now.getYear();
         var years = thisYear - firstYear;
 
-        var christmases = [];
+        var katsBirthdays = [];
 
         for (var i=0; i<=years; i++) {
             var year = thisYear - i; // reverse chronological order
-            var christmasDay = Christmas.forYear(moment, year, timezone);
+            var katsBirthdayDay = KatsBirthday.forYear(moment, year, timezone);
 
-            // only show christmases past
-            if (now > christmasDay) {
-                christmases.push({
-                    answer: Christmas.yes(country),
-                    christmas: true,
-                    christmas_day: christmasDay.toISOString(),
-                    christmas_time: (christmasDay.getTime() / 1000),
+            // only show katsBirthdayes past
+            if (now > katsBirthdayDay) {
+                katsBirthdays.push({
+                    answer: KatsBirthday.yes(country),
+                    katsBirthday: true,
+                    katsBirthday_day: katsBirthdayDay.toISOString(),
+                    katsBirthday_time: (katsBirthdayDay.getTime() / 1000),
                     year: year,
-                    id: "christmas-" + year,
+                    id: "katsBirthday-" + year,
                     timezone: timezone,
                     country: country,
-                    country_names: Christmas.countries[country].names
+                    country_names: KatsBirthday.countries[country].names
                 });
             }
         }
 
-        return christmases;
+        return katsBirthdays;
     };
 
-    // given a christmas object above, prepare it for IFTTT format
-    var iftttFor = function(christmas) {
+    // given a katsBirthday object above, prepare it for IFTTT format
+    var iftttFor = function(katsBirthday) {
         return {
-            answer: christmas.answer,
-            year: christmas.year,
-            created_at: christmas.christmas_day,
+            answer: katsBirthday.answer,
+            year: katsBirthday.year,
+            created_at: katsBirthday.katsBirthday_day,
             meta: {
                 // should only ever fire once a year
-                id: christmas.id,
-                timestamp: christmas.christmas_time,
+                id: katsBirthday.id,
+                timestamp: katsBirthday.katsBirthday_time,
             }
         }
     };
 
-    // isitchristmas API.
+    // isitkatsBirthday API.
     // Default to Esperanto and Greenwich Mean Time.
     router.get('/', function(req, res) {
         var country = findCountry(req) || "EO";
-        if (!Christmas.countries[country]) return res.status(400).json(ERROR(BAD_COUNTRY));
+        if (!KatsBirthday.countries[country]) return res.status(400).json(ERROR(BAD_COUNTRY));
 
         var timezone = (req.query.timezone || "UTC");
         if (moment.tz.zone(timezone) == null) {
             return res.status(400).json(ERROR(BAD_TIMEZONE));
         }
 
-        res.json({christmases: christmasesFor(country, timezone)})
+        res.json({katsBirthdays: katsBirthdaysFor(country, timezone)})
     });
 
     router.get('/test', function(req, res) {
@@ -108,7 +108,7 @@ module.exports = function(app, config, findCountry) {
         if (config.ifttt_debug) console.log("trigger: " + req.params.trigger);
         if (!authed(req)) return res.status(401).json(ERROR(UNAUTHORIZED));
 
-        if (req.params.trigger != "christmas") return res.status(400).json(ERROR(BAD_TRIGGER));
+        if (req.params.trigger != "katsBirthday") return res.status(400).json(ERROR(BAD_TRIGGER));
 
         if (!req.body.triggerFields || !req.body.triggerFields.timezone) return res.status(400).json(ERROR(MISSING_TRIGGER_FIELDS));
         if (!zones[req.body.triggerFields.timezone]) return res.status(400).json(ERROR(INVALID_TIMEZONE));
@@ -121,15 +121,15 @@ module.exports = function(app, config, findCountry) {
             // we've validated that this field is here
             var timezone = zones[req.body.triggerFields.timezone];
 
-            // every christmas since 2007 in the user's time zone
+            // every katsBirthday since 2007 in the user's time zone
             // for IFTTT, sadly I must just assume English
-            var christmases = christmasesFor("US", timezone);
+            var katsBirthdays = katsBirthdaysFor("US", timezone);
 
             var items = [];
-            for (var i=0; i<christmases.length; i++)
-                items.push(iftttFor(christmases[i]))
+            for (var i=0; i<katsBirthdays.length; i++)
+                items.push(iftttFor(katsBirthdays[i]))
 
-            // no more than 20 years of christmas data, tops
+            // no more than 20 years of katsBirthday data, tops
             items = items.slice(0, (req.body.limit || 20));
 
             res.json({"data": items});
@@ -139,7 +139,7 @@ module.exports = function(app, config, findCountry) {
     router.post('/ifttt/v1/triggers/:trigger/fields/:field/options', function(req, res) {
         if (!authed(req)) return res.status(401).json(ERROR(UNAUTHORIZED));
         if (config.ifttt_debug) console.log('triggerfield, trigger: ' + req.params.trigger + ', field: ' + req.params.field);
-        if (req.params.trigger != "christmas") return res.status(400).json(ERROR(BAD_TRIGGER));
+        if (req.params.trigger != "katsBirthday") return res.status(400).json(ERROR(BAD_TRIGGER));
         if (req.params.field != "timezone") return res.status(400).json(ERROR(BAD_TRIGGER_FIELD));
 
         res.json({"data": labels});
@@ -148,7 +148,7 @@ module.exports = function(app, config, findCountry) {
     router.post('/ifttt/v1/triggers/:trigger/fields/:field/validate', function(req, res) {
         if (!authed(req)) return res.status(401).json(ERROR(UNAUTHORIZED));
         if (config.ifttt_debug) console.log('triggerfield validate, trigger: ' + req.params.trigger + ', field: ' + req.params.field);
-        if (req.params.trigger != "christmas") return res.status(400).json(ERROR(BAD_TRIGGER));
+        if (req.params.trigger != "katsBirthday") return res.status(400).json(ERROR(BAD_TRIGGER));
         if (req.params.field != "timezone") return res.status(400).json(ERROR(BAD_TRIGGER_FIELD));
 
         if (zones[req.body.value])
@@ -176,12 +176,12 @@ module.exports = function(app, config, findCountry) {
             "data": {
                 "samples": {
                     "triggers": {
-                        "christmas": {
+                        "katsBirthday": {
                             "timezone": "Pacific Time (US & Canada)"
                         }
                     },
                     "triggerFieldValidations": {
-                        "christmas": {
+                        "katsBirthday": {
                             "timezone": {
                                 "valid": "Pacific Time (US & Canada)",
                                 "invalid": "America/Los_Angeles"

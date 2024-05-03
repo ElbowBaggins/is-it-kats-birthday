@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Is It Christmas?</title>
-    <link>https://isitchristmas.com</link>
+    <title>Is It Kat's Birthday?</title>
+    <link>https://isitkatsbirthday.com</link>
     <language>en-us</language>
     <description>
-      Is it Christmas?
+      Is it Kat's Birthday?
       <% if (req.query.only == "yes") { %>
-        (Christmas only)
+        (Birthday only)
       <% } %>
     </description>
-    <atom:link href="https://isitchristmas.com/rss.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://isitkatsbirthday.com/rss.xml" rel="self" type="application/rss+xml" />
     <%
       // var day = new Date(2013, 11, 25);
       var day = new Date();
       for (var i=0; i<10; i++) {
     %>
       <%
-        var itIs = Christmas.isIt(day);
-        var answer = Christmas.answer(country, day);
+        var itIs = KatsBirthday.isIt(day);
+        var answer = KatsBirthday.answer(country, day);
 
         if (
           !req.query.only ||
@@ -28,8 +28,8 @@
         <item>
           <title><%= answer %></title>
           <description><%= answer %></description>
-          <link>https://isitchristmas.com#<%= dateFormat(day, "isoDate") %></link>
-          <guid>https://isitchristmas.com#<%= dateFormat(day, "isoDate") %></guid>
+          <link>https://isitkatsbirthday.com#<%= dateFormat(day, "isoDate") %></link>
+          <guid>https://isitkatsbirthday.com#<%= dateFormat(day, "isoDate") %></guid>
           <pubDate><%= dateFormat(day, "ddd, d mmm yyyy 00:00:00 -0700") %></pubDate>
         </item>
       <% } %>

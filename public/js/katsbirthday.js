@@ -1,33 +1,33 @@
-// high-performance modern Christmas detection technology
+// high-performance modern KatsBirthday detection technology
 
-var Christmas = {
+var KatsBirthday = {
   time: {
     month: 11,
-    date: 25
+    date: 26
   },
 
   isIt: function(date) {
     if (!date) date = new Date();
-    return (date.getMonth() == Christmas.time.month && date.getDate() == Christmas.time.date);
+    return (date.getMonth() == KatsBirthday.time.month && date.getDate() == KatsBirthday.time.date);
   },
 
   thisYear: function() {
     var year = new Date().getYear() + 1900;
-    return new Date(year, Christmas.time.month, Christmas.time.date);
+    return new Date(year, KatsBirthday.time.month, KatsBirthday.time.date);
   },
 
   answer: function(countryCode, date) {
-    if (Christmas.isIt(date))
-      return Christmas.yes(countryCode);
+    if (KatsBirthday.isIt(date))
+      return KatsBirthday.yes(countryCode);
     else
-      return Christmas.no(countryCode);
+      return KatsBirthday.no(countryCode);
   },
 
   // for use from Node, where timezones are not set by user agent.
   // first argument is the moment-timezone module.
   forYear: function(moment, year, timezone) {
     // produces a zone-less timestamp, e.g. "2007-12-25 00:00:00"
-    var unzoned = "" + year + "-" + (Christmas.time.month+1) + "-" + Christmas.time.date + " 00:00:00";
+    var unzoned = "" + year + "-" + (KatsBirthday.time.month+1) + "-" + KatsBirthday.time.date + " 00:00:00";
 
     // produces a be-zoned timestamp, e.g. "2007-12-25T00:00:00-05:00"
     var zoned = new moment.tz(unzoned, timezone);
@@ -2369,7 +2369,7 @@ File tickets at: https://github.com/isitchristmas/web/issues
 // use this client-side and server-side
 
 if (typeof(window) !== "undefined")
-  window.Christmas = Christmas;
+  window.KatsBirthday = KatsBirthday;
 
 if (typeof(module) !== "undefined" && module.exports)
-  module.exports = Christmas;
+  module.exports = KatsBirthday;

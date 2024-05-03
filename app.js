@@ -7,7 +7,7 @@ var index = function(req, res) {
   var country = findCountry(req);
 
   res.render('index', {
-    answer: Christmas.answer(country),
+    answer: KatsBirthday.answer(country),
     country: country,
 
     config: config,
@@ -20,7 +20,7 @@ var rss = function(req, res) {
 
   res.render('rss.xml', {
     country: findCountry(req),
-    Christmas: Christmas,
+    KatsBirthday: KatsBirthday,
     dateFormat: dateFormat,
 
     config: config,
@@ -59,7 +59,7 @@ var findCountry = function(req) {
 var express = require('express'),
     http = require('http'),
     dateFormat = require('dateformat'),
-    Christmas = require("./public/js/christmas"); // re-use christmas.js
+    KatsBirthday = require("./public/js/katsbirthday"); // re-use katsbirthday.js
 
 // TODO: is this even used anywhere?
 require('date-utils'); // date helpers

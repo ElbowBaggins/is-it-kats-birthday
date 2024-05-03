@@ -1,12 +1,14 @@
 <!--
 
   Built by Eric Mill: twitter.com/konklone
+  Build by The Stig: github.com/ElbowBaggins
   With huge thanks to Brandon Jones: twitter.com/btj
 
   Bug reports and stuff:
     github.com/isitchristmas/web/issues
+    github.com/ElbowBaggins/is-it-kats-birthday/issues
 
-  Open the developer console (around Christmas).
+  Open the developer console (around Kat's birthday).
 
 -->
 
@@ -16,7 +18,7 @@
   <link rel="authors" href="/humans.txt" />
 
   <meta charset="utf-8" />
-  <title>Is it Christmas?</title>
+  <title>Is it Kat's Birthday?</title>
 
   <link rel="shortcut icon" href="/icons/large.png" />
 
@@ -37,19 +39,19 @@
     window.addEventListener('load', loadServiceWorker);
   </script>
 
-  <link rel="alternate" title="Is It Christmas?" href="/rss.xml" type="application/rss+xml" />
-  <link rel="alternate" title="Is It Christmas? (Christmas only)" href="/rss.xml?only=yes" type="application/rss+xml" />
+  <link rel="alternate" title="Is It Kat's Birthday?" href="/rss.xml" type="application/rss+xml" />
+  <link rel="alternate" title="Is It Kat's Birthday? (Kat's birthday only)" href="/rss.xml?only=yes" type="application/rss+xml" />
 
   <meta name="twitter:site" content="@konklone">
   <meta name="twitter:creator" content="@konklone">
-  <meta property="og:site_name" content="Is It Christmas?" />
+  <meta property="og:site_name" content="Is It Kat's Birthday?" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://isitchristmas.com" />
+  <meta property="og:url" content="https://isitkatsbirthday.com" />
 
-  <meta property="og:title" content="Is It Christmas?" />
+  <meta property="og:title" content="Is It Kat's birthday?" />
 
   <meta name="twitter:card" content="summary">
-  <meta property="og:image" content="https://isitchristmas.com/icons/large-wide.png" />
+  <meta property="og:image" content="https://isitkatsbirthday.com/icons/large-wide.png" />
 
     <style type="text/css">
 
@@ -180,7 +182,7 @@
     }
   </style>
 
-  <script type="text/javascript" src="/js/christmas.js?<%= (new Date()).getTime() %>"></script>
+  <script type="text/javascript" src="/js/katsbirthday.js?<%= (new Date()).getTime() %>"></script>
 
   <!-- IE11 JS targeting, from https://stackoverflow.com/a/17447695 -->
   <script type="text/javascript">
@@ -208,6 +210,7 @@
   <div id="links">
     <a href="https://twitter.com/konklone" target="_blank">by @konklone</a>
     <a href="https://ifttt.com/isitchristmas" target="_blank">on IFTTT</a>
+    <a href="https://github.com/ElbowBaggins" target="_blank">by @ElbowBaggins</a>
     <a href="https://xkcd.com/2236/" target="_blank">on XKCD?!</a>
     <!-- filled in dynamically by JavaScript -->
     <a id="console" href="#" target="_blank">console</a>
@@ -218,7 +221,7 @@
   <!-- replace fallback data with locally calculated values -->
   <script type="text/javascript">
     var country = "<%= country %>";
-    if (!(Christmas.countries[country] && Christmas.countries[country].width))
+    if (!(KatsBirthday.countries[country] && KatsBirthday.countries[country].width))
       country = "EO";
 
     var me = {
@@ -226,14 +229,14 @@
     };
 
     var checkedAt; // store last check, to manage race conditions
-    function updateChristmas(isIt) {
-      me.christmas = isIt;
+    function updateKatsBirthday(isIt) {
+      me.katsBirthday = isIt;
 
       var answer;
       if (isIt)
-        answer = Christmas.yes(country);
+        answer = KatsBirthday.yes(country);
       else
-        answer = Christmas.no(country);
+        answer = KatsBirthday.no(country);
 
       var elem = document.getElementById('answer');
       elem.innerHTML = answer;
@@ -242,25 +245,8 @@
       checkedAt = Date.now();
     }
 
-    updateChristmas(Christmas.isIt());
+    updateKatsBirthday(KatsBirthday.isIt());
   </script>
-
-
-  <% if (env == "production") { %>
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-252618-5', 'isitchristmas.com');
-      ga('set', 'anonymizeIp', true);
-      ga('set', 'forceSSL', true);
-      ga('send', 'pageview');
-
-    </script>
-  <% } %>
-
 
   <!-- optional: interaction -->
   <script src="/js/browser.js?<%= (new Date()).getTime() %>"></script>
@@ -275,9 +261,9 @@
 
     var user = {
       log: {
-        join: <%= config.log.join %>, // join/leave messages
-        info: <%= config.log.info %>,   // default
-        debug: <%= config.log.debug %>, // you know
+        join: "<%= config.log.join %>", // join/leave messages
+        info: "<%= config.log.info %>",   // default
+        debug: "<%= config.log.debug %>", // you know
 
         life: true,  // life and death events
         chat: true,  // chat messages
@@ -324,25 +310,24 @@
     me.clickBorder = {true: "#000", false: "#fff"}[me.darkMode];
 
     // sockjs server endpoint
-    <% if (req.query.streaming) { %>
-      var url = "<%= req.query.streaming %>/christmas";
-    <% } else { %>
-      <% var random = Math.floor(Math.random() * config.streaming.length); %>
-      var url = "<%= config.streaming[random] %>/christmas";
-    <% } %>
+    if (!!"<%= req.query.streaming %>") {
+      var url = "<%= req.query.streaming %>/katsBirthday";
+    } else {
+      var url = "<%= config.streaming[Math.floor(Math.random() * config.streaming.length)] %>/katsBirthday";
+    }
 
     // whether activity is visible to the user
-    var visible = <%= (req.query.visible || config.visible) ? "true" : "false" %>;
+    var visible = "<%= (req.query.visible || config.visible) ? 'true' : 'false' %>" === 'true';
 
     // whether we need to force chat to stay plain-text (no styles).
     // right now, the only situation that's relevant is IE.
-    var plainConsole = <%= (req.query.console == "plain") || "false" %> || !!window._ie;
+    var plainConsole = "<%= (req.query.console == 'plain') || 'false' %>" === 'true' || !!window._ie;
 
     // RIP background-image CSS in Chrome and Firefox :(
     var backgroundImages = false; // !(plainConsole || window._firefox);
 
     // force it to use a particular transport
-    var transport = "<%= req.query.transport || "" %>";
+    var transport = "<%= req.query.transport || '' %>";
 
     // we only need websockets these days (huzzah!)
     var default_transports = ["websocket"];
@@ -366,8 +351,8 @@
         legendTimeout;
 
     // timers for xmas-in and xmas-out
-    var christmasTimer,
-        christmasEndTimer;
+    var katsBirthdayTimer,
+        katsBirthdayEndTimer;
 
     // display a custom console link per-browser
     var consoles = {
@@ -612,8 +597,8 @@
       };
 
       var name;
-      if (Christmas.countries[other.country])
-        name = Christmas.countries[other.country].name;
+      if (KatsBirthday.countries[other.country])
+        name = KatsBirthday.countries[other.country].name;
       else
         name = other.country;
 
@@ -661,8 +646,8 @@
         flag += "%c   ";
 
       var name;
-      if (Christmas.countries[country])
-        name = Christmas.countries[country].name;
+      if (KatsBirthday.countries[country])
+        name = KatsBirthday.countries[country].name;
       else
         name = country;
 
@@ -695,7 +680,7 @@
       if (klass == "other") {
         div.onmouseover = function() {
           clearTimeout(legendTimeout);
-          legend.innerHTML = Christmas.countries[country].names.join("<br/>");
+          legend.innerHTML = KatsBirthday.countries[country].names.join("<br/>");
           legend.style.opacity = 1;
           legendTimeout = setTimeout(function() {
             legend.style.opacity = 0;
@@ -716,7 +701,7 @@
 
     // there is sadly no international standard on flag aspect ratio
     var flagWidth = function(country) {
-      return ((Christmas.countries[country] && Christmas.countries[country].width) || 40);
+      return ((KatsBirthday.countries[country] && KatsBirthday.countries[country].width) || 40);
     }
 
 
@@ -935,7 +920,7 @@
 
     var spam = function() {
       var msg = "%cPlease%c don't spam and ruin the chat! :) %c  %c %c  %c %c  ";
-      log.system(msg, styles.please, styles.spam, styles.emoji("smiley"), styles.spam, styles.emoji("heart"), styles.spam, styles.emoji("christmas_tree"));
+      log.system(msg, styles.please, styles.spam, styles.emoji("smiley"), styles.spam, styles.emoji("heart"), styles.spam, styles.emoji("katsbirthday_tree"));
     }
 
     // I'll have to figure out a better syntax for
@@ -977,9 +962,9 @@
       var advanced3 = "%croom()%c - Stats about the room you're in."
       var advanced4 = "%cwtf()%c - How is this happening"
       var keys = "%cYou can use arrow keys to rotate the flag."
-      var api = "%cWant to make a bot? Check out the JavaScript API: https://github.com/isitchristmas/web/wiki"
+      var api = "%cWant to make a bot? Check out the JavaScript API: https://github.com/isitkatsbirthday/web/wiki"
 
-      var credit = "%cMade by https://twitter.com/konklone, full credits at https://isitchristmas.com/humans.txt";
+      var credit = "%cMade by https://twitter.com/konklone, full credits at https://isitkatsbirthday.com/humans.txt";
 
       log.system("%cAdvanced commands:", styles.help);
       log.system(" ");
@@ -1026,8 +1011,8 @@
 
       stats.forEach(function(country) {
         var name, num;
-        if (Christmas.countries[country]) {
-          name = Christmas.countries[country].name;
+        if (KatsBirthday.countries[country]) {
+          name = KatsBirthday.countries[country].name;
           num = countries[country].length;
         }
         else {
@@ -1144,7 +1129,7 @@
       if (!canNotify) return;
 
       if (Notification.permission == "granted")
-        new Notification(user, {body: message, icon: "https://isitchristmas.com/favicon.ico"});
+        new Notification(user, {body: message, icon: "https://isitkatsbirthday.com/favicon.ico"});
       else
         log.system('Please enable notifications by clicking your flag above.');
     };
@@ -1189,7 +1174,7 @@
         ";\\(": ":crying_cat_face:",
         ";_;": ":crying_cat_face:",
         "\\${2,}": ":moneybag:",
-        "\\btree\\b": ":christmas_tree:",
+        "\\btree\\b": ":katsbirthday_tree:",
       };
 
       // RIP CSS background-image in the dev console :(
@@ -1301,7 +1286,7 @@
     }
 
 
-/** christmas midnight effect **/
+/** katsbirthday midnight effect **/
 
     // live flip when it's Xmas, and when it's not again
     var flagRule = addCSSRule(".flag");
@@ -1328,7 +1313,7 @@
 
 
     function setTimers() {
-      // the init timer to fade in the links, used at christmas time
+      // the init timer to fade in the links, used at katsbirthday time
 
       setTimeout(function() {
         document.getElementById("links").style.opacity = 1;
@@ -1349,7 +1334,7 @@
       }
 
 
-      var nextXmas = Christmas.thisYear();
+      var nextXmas = KatsBirthday.thisYear();
       // var nextXmas = new Date(Date.now() + (5 * 1000)); // 5 seconds from now
       // var nextXmas = new Date(Date.now()); // pretend we showed up a few milliseconds before
 
@@ -1358,16 +1343,16 @@
       var afterXmas = nextXmas + (24 * 60 * 60 * 1000); // 1 day later
       // var afterXmas = nextXmas + (5 * 1000); // 10 seconds later
 
-      // console.log("Christmas set for: " + new Date(nextXmas));
-      // console.log("Christmas ends: " + new Date(afterXmas));
+      // console.log("KatsBirthday set for: " + new Date(nextXmas));
+      // console.log("KatsBirthday ends: " + new Date(afterXmas));
 
       if (checkedAt < nextXmas) {
 
         flagFade(nextXmas);
 
-        christmasTimer = setTimeout(function() {
-          log.system("%c" + Christmas.yes(country), styles.answer);
-          updateChristmas(true);
+        katsBirthdayTimer = setTimeout(function() {
+          log.system("%c" + KatsBirthday.yes(country), styles.answer);
+          updateKatsBirthday(true);
         }, (nextXmas - Date.now()));
       }
 
@@ -1375,9 +1360,9 @@
 
         flagFade(afterXmas);
 
-        christmasEndTimer = setTimeout(function() {
-          log.system("%c" + Christmas.no(country), styles.answer);
-          updateChristmas(false);
+        katsBirthdayEndTimer = setTimeout(function() {
+          log.system("%c" + KatsBirthday.no(country), styles.answer);
+          updateKatsBirthday(false);
         }, (afterXmas - Date.now()));
       }
     }
@@ -1479,10 +1464,10 @@
 
       // how is this possible
       flag: function(country) {
-        return "background-image: url(\"https://isitchristmas.com/countries/" + country + ".png\"); background-size: 100% 13px; border: 1px solid " + colors.flag_border;
+        return "background-image: url(\"https://isitkatsbirthday.com/countries/" + country + ".png\"); background-size: 100% 13px; border: 1px solid " + colors.flag_border;
       },
       emoji: function(emoji) {
-        return "background-image: url(\"https://isitchristmas.com/emojis/" + emoji + ".png\"); background-size: 100%;";
+        return "background-image: url(\"https://isitkatsbirthday.com/emojis/" + emoji + ".png\"); background-size: 100%;";
       },
       answer: "color: " + colors.answer + "; font-weight: bold; font-size: 120pt; text-transform: uppercase; font-family: Arial, sans-serif;"
     }
@@ -1528,8 +1513,8 @@
 
 /**** GO ****/
 
-   //setTimers();
-   //connect(url);
+  setTimers();
+  connect(url);
 
   </script>
 </body>

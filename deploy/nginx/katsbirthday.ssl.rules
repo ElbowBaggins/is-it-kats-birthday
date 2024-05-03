@@ -1,0 +1,4 @@
+ssl_certificate_key /home/katsbirthday/web/shared/keys/www.isitkatsbirthday.com.key;
+ssl_certificate /home/katsbirthday/web/shared/keys/www.isitkatsbirthday.com.chained.crt;
+
+include ssl/ssl.rules;

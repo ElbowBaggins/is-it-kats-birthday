@@ -2,16 +2,16 @@ import time
 from fabric import Connection, task
 
 environment = "production"
-host = "christmas"
+host = "katsbirthday"
 
 conn = Connection(host, connect_kwargs={"disabled_algorithms": {'pubkeys': ['rsa-sha2-256', 'rsa-sha2-512']}})
 
 branch = "master"
-repo = "git@github.com:isitchristmas/web.git"
+repo = "git@github.com:ElbowBaggins/is-it-kats-birthday.git"
 
-username = "christmas"
-home = "/home/christmas/web"
-logs = "/home/christmas/data/log"
+username = "katsbirthday"
+home = "/home/katsbirthday/web"
+logs = "/home/katsbirthday/data/log"
 shared_path = "%s/shared" % home
 versions_path = "%s/versions" % home
 version_path = "%s/versions/%s" % (home, time.strftime("%Y%m%d%H%M%S"))
